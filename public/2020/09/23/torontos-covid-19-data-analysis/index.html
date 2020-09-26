@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>Toronto&#39;s COVID-19 Data Analysis  - Chelsea&#39;s website</title>
+<meta property="og:title" content="Toronto&#39;s COVID-19 Data Analysis  - Chelsea&#39;s website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Toronto&#39;s COVID-19 Data Analysis </h1>
+
+    
+    <span class="article-date">2020-09-23</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div id="abstraction" class="section level1">
+<h1>Abstraction</h1>
+<p>In this paper, we explore the 2019-2020 COVID-19 dataset from Toronto Open Data Portal. This data is important for the wellbeing of Toronto citizens, implicating the severity of virus. Histograms and Bar plots are used to demonstrate the data and results show the source of infection and that the risk of severeness increases with age.</p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Covid-19 (Coronavirus) has been a prevalent disease among Toronto’s residents, and it has been recognized as one of the most urgent health concerns in 2020. As of September 2020, near 30 million cases reported globally resulting in more than 960,000 death. Hence, our interest is to identify the patterns in the dataset.</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>The COVID-19 Dataset is an open source dataset from Toronto Open Data Portal containing
+demographic, geographic, and severity information for all confirmed and probable cases
+reported and managed by Toronto Public Health.</p>
+<pre class="r"><code>names(dataset)</code></pre>
+<pre><code>##  [1] &quot;_id&quot;                    &quot;Assigned_ID&quot;            &quot;Outbreak Associated&quot;   
+##  [4] &quot;Age Group&quot;              &quot;Neighbourhood Name&quot;     &quot;FSA&quot;                   
+##  [7] &quot;Source of Infection&quot;    &quot;Classification&quot;         &quot;Episode Date&quot;          
+## [10] &quot;Reported Date&quot;          &quot;Client Gender&quot;          &quot;Outcome&quot;               
+## [13] &quot;Currently Hospitalized&quot; &quot;Currently in ICU&quot;       &quot;Currently Intubated&quot;   
+## [16] &quot;Ever Hospitalized&quot;      &quot;Ever in ICU&quot;            &quot;Ever Intubated&quot;</code></pre>
+<p>There are many variables included in this dataset, but for the purpose of this study, we will mainly focus on the “source of infection”, patient’s “Age Group”, “Outcome” of the patient and whether the patient has “Ever Hospitalized”.</p>
+</div>
+<div id="age-distribution-histogram" class="section level1">
+<h1>Age Distribution Histogram</h1>
+<p>First, a histogram of the age distribution is computed. The age data are given in groups, each has 10 years range form under 19 to over 90.</p>
+<pre class="r"><code>dataset %&gt;% 
+  ggplot(aes(x = `Age Group`)) +
+  geom_histogram(stat=&quot;count&quot;, fill = &#39;Orange&#39;) +
+  labs(x = &quot;Age Distribution&quot;,
+       y = &quot;Number of Cases&quot;,
+       title = &quot;Age Distribution of Toronto&#39;s Covid-19 Cases&quot;,
+       caption = &quot;Open Government License - Toronto.&quot;) +
+  theme_bw() + scale_x_discrete(labels = c(&quot;19 and younger&quot; = &quot;Under 19&quot;, &quot;90 and older&quot; = &quot;Over 90&quot;,&#39;40 to 49 Years&#39; = &#39;40-49&#39;, &#39;20 to 29 Years&#39; = &#39;20-29&#39;, &#39;30 to 39 Years&#39; = &#39;30-39&#39;, &#39;50 to 59 Years&#39; = &#39;50-59&#39;,&#39;60 to 69 Years&#39; = &#39;60-69&#39;, &#39;70 to 79 Years&#39; = &#39;70-79&#39;,&#39;80 to 89 Years&#39; = &#39;80-89&#39;))</code></pre>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+From the age distribution histogram, we can see that the data is relatively normal
+distributed comparing to other graphs, where adults and middle aged residents are
+the main target of this virus, residents under 19 and above 70 have lower number of cases.
+This might be because that adults and middle aged adults has to work in open enviroment, and therefore more likely to have contact with others.</p>
+</div>
+<div id="source-of-infection-histogram" class="section level1">
+<h1>Source of Infection Histogram</h1>
+<p>Second, the source of infection is important for us to find out how the Coronavirus is transmitted and what can we do to avoid infection.</p>
+<pre class="r"><code>dataset %&gt;% 
+  ggplot(aes(x = `Source of Infection`)) +
+  geom_histogram(stat=&quot;count&quot;, fill = &#39;blue&#39;) +
+  labs(x = &quot;Source of Infection&quot;,
+       y = &quot;Number of Cases&quot;,
+       title = &quot;Source of infection of Toronto&#39;s Covid-19 Cases&quot;,
+       caption = &quot;Open Government License - Toronto.&quot;) +
+  theme_bw() + scale_x_discrete(labels = c(&quot;N/A - Outbreak associated&quot; = &quot;Outbreak&quot; ))</code></pre>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>From the source histogram, we can tell that most of the infections comes from close contact with existing patients, or associated with the outbreak of the pandemic. This confirms the importance of remaining social distancing, avoid contact with large crowd.</p>
+</div>
+<div id="fatality-distribution-histogram" class="section level1">
+<h1>Fatality Distribution Histogram</h1>
+<p>Moreover, fatality is another important factor that we need to examine in order to find out who is more volunerable towards this virus.</p>
+<pre class="r"><code>AgeFatality &lt;- subset(dataset, dataset$&quot;Outcome&quot; == &quot;FATAL&quot;)
+
+AgeFatality %&gt;% 
+  ggplot(aes(x = `Age Group`)) +
+  geom_histogram(stat=&quot;count&quot;, fill = &#39;red&#39;) +
+  labs(x = &quot;Age Groups &quot;,
+       y = &quot;Number of Fatalities&quot;,
+       title = &quot;Age and fatality distribution of Toronto&#39;s Covid-19 Cases&quot;,
+       caption = &quot;Open Government License - Toronto.&quot;) +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))</code></pre>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The above graph is very skewed and although from the previous graph that there are more infected cases for adults aged 20 to 60 but the fatality graph above shows that there are actually more fatal cases for elder adults from 60-90, indicating that younger people are more likely to be recovered from the virus and elder people are more vulnerable towards this virus.</p>
+</div>
+<div id="hospitalzed-percentage-bar-plot" class="section level1">
+<h1>Hospitalzed Percentage Bar-Plot</h1>
+<p>The dataset also records whether the patient has ever been hospitalized, this data is necessary for us to find out the hospitalize rate in order for better medical preparation and hospital capacities.</p>
+<pre class="r"><code>dataset$`Ever Hospitalized` &lt;- ifelse(dataset$`Ever Hospitalized` == &quot;Yes&quot;, 1, 0)
+
+d4 &lt;- dataset %&gt;% 
+   group_by(`Age Group`) %&gt;% 
+   summarise(AgeCount= n())</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>d3 &lt;- dataset %&gt;%
+   group_by(`Age Group`) %&gt;% 
+   summarise(`Hospitalized` = sum(`Ever Hospitalized`))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>d5 &lt;-merge(d4, d3)
+
+d5 &lt;- rename(d5, &#39;Age&#39; = &#39;Age Group&#39;)
+
+ggplot(d5) +
+  geom_col(aes(x = Age, y = AgeCount, fill = &quot;AgeCount&quot;), alpha = 0.5) +
+  geom_col(aes(x = Age, y = Hospitalized, fill = &quot;Hospitalized&quot;), alpha = 0.5) +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))</code></pre>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>From the bar plot above, Hospitalization rates increase with age and are highest among elders. Adults in there 60’s to 90’s are more likely to be hospitalized, which is consistent with the fatality histogram above.</p>
+</div>
+<div id="conclusion-and-discussion" class="section level1">
+<h1>Conclusion and Discussion</h1>
+<p>Overall, the figures above shoes that most of the current reported cases are infected by close contact with existing patients or associated with the outbreak of the virus. To prevent the spread of the virus, maintaining social distancing is necessary. Moreover, although all age groups are at risks with this disease, but fatality and hospitalization rate are increased with age indicating that elders are more vulnerable for this disease and therefore should be more careful.</p>
+</div>
+<div id="weakness-and-future-work" class="section level1">
+<h1>Weakness and Future work</h1>
+<p>This study is done with the existing current data uploaded by Toronto’s open data portal. The fatality and Hospitalization are likely to change once the data has been updated(daily basis). The dataset population are also based on Toronto residents, where health-care systems in Toronto are likely to be different with other regions which could lead to different fatality/hospitalization, hence different regions could also be considered for future work.</p>
+</div>
+<div id="reference" class="section level1">
+<h1>Reference</h1>
+<p>Citations:</p>
+<p>opendatatoronto
+Sharla Gelfand (2020). opendatatoronto: Access the City of Toronto Open
+Data Portal. <a href="https://sharlagelfand.github.io/opendatatoronto/" class="uri">https://sharlagelfand.github.io/opendatatoronto/</a>,
+<a href="https://github.com/sharlagelfand/opendatatoronto/" class="uri">https://github.com/sharlagelfand/opendatatoronto/</a>.</p>
+<p>tidyverse
+Wickham et al., (2019). Welcome to the tidyverse.
+Journal of Open Source Software, 4(43), 1686,
+<a href="https://doi.org/10.21105/joss.01686" class="uri">https://doi.org/10.21105/joss.01686</a></p>
+<p>dplyr
+Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020).
+dplyr: A Grammar of Data Manipulation. R package version 1.0.1.
+<a href="https://CRAN.R-project.org/package=dplyr" class="uri">https://CRAN.R-project.org/package=dplyr</a></p>
+<p>rmarkdown
+JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins
+and Hadley Wickham and Joe Cheng and Winston Chang and Richard Iannone (2020).
+rmarkdown: Dynamic Documents for R. R package version 2.3.
+URL <a href="https://rmarkdown.rstudio.com" class="uri">https://rmarkdown.rstudio.com</a>.</p>
+<p>Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown:
+The Definitive Guide. Chapman and Hall/CRC. ISBN 9781138359338.
+URL <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>.</p>
+<p>ggplot2
+H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.</p>
+<p>Blogdown
+Yihui Xie (2020). blogdown: Create Blogs and Websites
+with R Markdown. R package version 0.20.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="../../../../js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
