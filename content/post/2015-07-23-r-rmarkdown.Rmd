@@ -8,6 +8,7 @@ tags: ["R Markdown", "plot", "regression"]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 install.packages("opendatatoronto")
 install.packages('devtools')
 devtools::install_github("sharlagelfand/opendatatoronto")

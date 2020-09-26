@@ -14,4 +14,3 @@ blogdown::new_site(
   to_yaml = TRUE,
   serve = interactive()
 )
-

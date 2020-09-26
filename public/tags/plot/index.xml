@@ -8,11 +8,11 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 23 Sep 2020 21:13:14 -0500</lastBuildDate><atom:link href="/tags/plot/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Toronto COVID-19 Data Analysis </title>
-      <link>/2020/09/23/toronto-covid-19-data-analysis/</link>
+      <title>Toronto&#39;s COVID-19 Data Analysis </title>
+      <link>/2020/09/23/torontos-covid-19-data-analysis/</link>
       <pubDate>Wed, 23 Sep 2020 21:13:14 -0500</pubDate>
       
-      <guid>/2020/09/23/toronto-covid-19-data-analysis/</guid>
+      <guid>/2020/09/23/torontos-covid-19-data-analysis/</guid>
       <description>Abstraction In this paper, we explore the 2019-2020 COVID-19 dataset from Toronto Open Data Portal. This data is important for the wellbeing of Toronto citizens, implicating the severity of virus. Histograms and Bar plots are used to demonstrate the data and results show the source of infection and that the risk of severeness increases with age.
  Introduction Covid-19 (Coronavirus) has been a prevalent disease among Toronto’s residents, and it has been recognized as one of the most urgent health concerns in 2020.</description>
     </item>
