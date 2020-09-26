@@ -1,5 +1,5 @@
 ---
-title: "Toronto COVID-19 Data Analysis "
+title: "Toronto's COVID-19 Data Analysis "
 author: "Chelsea QianWen Shen"
 date: 2020-09-23T21:13:14-05:00
 categories: ["R"]
